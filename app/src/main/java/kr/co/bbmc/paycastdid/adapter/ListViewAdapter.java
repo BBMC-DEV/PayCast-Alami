@@ -1,4 +1,4 @@
-package kr.co.bbmc.paycastdid;
+package kr.co.bbmc.paycastdid.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import kr.co.bbmc.paycastdid.R;
+import kr.co.bbmc.paycastdid.model.OrderMenuItem;
 
 public class ListViewAdapter extends BaseAdapter {
 

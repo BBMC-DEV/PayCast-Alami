@@ -1,0 +1,31 @@
+ext {
+    // retrofit
+    retrofit_version = "2.9.0"
+
+    // room
+    room_version = "2.5.1"
+
+    // life_cycle_version (androidx)
+    life_cycle_version = "2.6.1"
+
+    // Rx-life-Cycle
+    rx_life_cycle_version = "4.0.2"
+
+    // data store
+    data_store_version = "1.0.0"
+
+    // compose version
+    compose_version = "1.4.2"
+
+    // glide
+    glide_version = "1.4.7"
+
+    // lottie
+    lottieVersion = "6.0.0"
+
+    // paging
+    paging_version = "3.1.1"
+
+    // firebase bom
+    firebase_bom_version = "31.5.0"
+}

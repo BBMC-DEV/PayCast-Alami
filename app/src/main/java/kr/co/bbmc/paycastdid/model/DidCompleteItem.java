@@ -1,4 +1,4 @@
-package kr.co.bbmc.paycastdid;
+package kr.co.bbmc.paycastdid.model;
 
 public class DidCompleteItem {
     public String orderSeq="";

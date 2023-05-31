@@ -1,4 +1,4 @@
-package kr.co.bbmc.paycastdid;
+package kr.co.bbmc.paycastdid.service;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -16,7 +16,6 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import androidx.annotation.UiThread;
 import android.util.Log;
 
 import com.orhanobut.logger.Logger;
@@ -38,6 +37,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import kr.co.bbmc.paycastdid.model.DidAlarmData;
+import kr.co.bbmc.paycastdid.model.DidAlarmMenuData;
+import kr.co.bbmc.paycastdid.DidCmdAsyncTask;
+import kr.co.bbmc.paycastdid.DidExternalVarApp;
+import kr.co.bbmc.paycastdid.R;
 import kr.co.bbmc.selforderutil.AuthKeyFile;
 import kr.co.bbmc.selforderutil.CommandObject;
 import kr.co.bbmc.selforderutil.DidOptionEnv;
@@ -1997,7 +2001,7 @@ public class DidMainService extends Service {
                             {
                                 DidAlarmData alarmData = mDidExterVarApp.alarmDataList.get(i);
                                 if(alarmData.orderSeq.equalsIgnoreCase(tempDidOptData.orderSeq)) {
-                                    if(Integer.valueOf(alarmData.cookAlarmId) < Integer.valueOf(tempDidOptData.cookAlarmId))
+                                    if(Integer.parseInt(alarmData.cookAlarmId) < Integer.parseInt(tempDidOptData.cookAlarmId))
                                     {
                                         addflag = false;
                                         int index = mDidExterVarApp.alarmDataList.indexOf(alarmData);

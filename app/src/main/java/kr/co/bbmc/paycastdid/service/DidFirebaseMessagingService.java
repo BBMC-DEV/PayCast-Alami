@@ -1,4 +1,4 @@
-package kr.co.bbmc.paycastdid;
+package kr.co.bbmc.paycastdid.service;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import kr.co.bbmc.paycastdid.DidExternalVarApp;
+import kr.co.bbmc.paycastdid.R;
 import kr.co.bbmc.selforderutil.AuthKeyFile;
 import kr.co.bbmc.selforderutil.FileUtils;
 import kr.co.bbmc.selforderutil.NetworkUtil;

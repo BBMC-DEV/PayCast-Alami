@@ -11,6 +11,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import kr.co.bbmc.paycastdid.model.DidAlarmData;
+import kr.co.bbmc.paycastdid.model.DidAlarmMenuData;
+import kr.co.bbmc.paycastdid.model.OrderListItem;
+import kr.co.bbmc.paycastdid.model.OrderMenuItem;
+
 public class SettingEnvPersister {
     private static String TAG ="SettingEnvPersister";
     private static SharedPreferences mPrefs;
@@ -203,7 +208,7 @@ public class SettingEnvPersister {
      *  get order list
      * @return
      */
-    public static List<DidAlarmData > getDidAlarmOrderList() {
+    public static List<DidAlarmData> getDidAlarmOrderList() {
         String s = mPrefs.getString(DID_ALARM_ORDERLIST, "");
         if((s==null)||(s.isEmpty()))
             return null;

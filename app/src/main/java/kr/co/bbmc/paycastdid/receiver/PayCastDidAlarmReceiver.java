@@ -1,4 +1,4 @@
-package kr.co.bbmc.paycastdid;
+package kr.co.bbmc.paycastdid.receiver;
 
 import android.app.ActivityManager;
 import android.app.PendingIntent;
@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 
 import java.util.List;
+
+import kr.co.bbmc.paycastdid.MainActivity;
 
 public class PayCastDidAlarmReceiver extends BroadcastReceiver {
     public static int REQUEST_CODE = 22345;

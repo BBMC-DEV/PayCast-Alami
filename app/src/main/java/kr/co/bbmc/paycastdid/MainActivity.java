@@ -2,7 +2,6 @@ package kr.co.bbmc.paycastdid;
 
 import android.Manifest;
 import android.app.AlarmManager;
-import android.app.FragmentTransaction;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -54,6 +53,14 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import kr.co.bbmc.paycastdid.adapter.RecyclerViewAdapter;
+import kr.co.bbmc.paycastdid.model.BlinkAlarmData;
+import kr.co.bbmc.paycastdid.model.DidAlarmData;
+import kr.co.bbmc.paycastdid.model.DidAlarmMenuData;
+import kr.co.bbmc.paycastdid.model.OrderListItem;
+import kr.co.bbmc.paycastdid.model.OrderMenuItem;
+import kr.co.bbmc.paycastdid.receiver.PayCastDidAlarmReceiver;
+import kr.co.bbmc.paycastdid.service.DidMainService;
 import kr.co.bbmc.selforderutil.AuthKeyFile;
 import kr.co.bbmc.selforderutil.CustomAlertDialog;
 import kr.co.bbmc.selforderutil.FileUtils;
@@ -92,7 +99,6 @@ public class MainActivity extends AppCompatActivity implements DidMainService.Ca
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         SettingEnvPersister.initPrefs(this);
-
 
         setContentView(R.layout.activity_main);
 
@@ -301,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements DidMainService.Ca
 
     }
 
-    class OnBlinkTimerTask extends TimerTask {
+    public class OnBlinkTimerTask extends TimerTask {
         private BlinkAlarmData blinkAlarmData;
         private boolean cancelFlag = false;
 

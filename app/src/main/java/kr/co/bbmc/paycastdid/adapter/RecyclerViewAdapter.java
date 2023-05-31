@@ -1,4 +1,4 @@
-package kr.co.bbmc.paycastdid;
+package kr.co.bbmc.paycastdid.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -19,13 +19,17 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import kr.co.bbmc.paycastdid.R;
+import kr.co.bbmc.paycastdid.model.OrderListItem;
+import kr.co.bbmc.paycastdid.model.OrderMenuItem;
+
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private static String TAG ="RecyclerViewAdapter";
     private static int MAX_CARD_VIEW = 3;
     private Context mContext;
     protected ItemListener mListener;
-    List<OrderListItem> mValues;
+    public List<OrderListItem> mValues;
     private List<ViewHolder> mViewList = new ArrayList<ViewHolder>();
 
 
@@ -151,7 +155,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public TextView textView;
         ListView listView;
         ListViewAdapter adapter;
-        LinearLayout recyclerLayout;
+        public LinearLayout recyclerLayout;
         public View mViewholder;
 
         public ViewHolder(View itemView) {

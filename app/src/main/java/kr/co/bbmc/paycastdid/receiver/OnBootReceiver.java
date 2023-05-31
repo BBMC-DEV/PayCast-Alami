@@ -1,9 +1,11 @@
-package kr.co.bbmc.paycastdid;
+package kr.co.bbmc.paycastdid.receiver;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+
+import kr.co.bbmc.paycastdid.MainActivity;
 
 public class OnBootReceiver extends BroadcastReceiver {
     @Override

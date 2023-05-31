@@ -1,4 +1,4 @@
-package kr.co.bbmc.paycastdid;
+package kr.co.bbmc.paycastdid.adapter;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -8,6 +8,9 @@ import androidx.viewpager.widget.PagerAdapter;
 import android.view.View;
 
 import java.util.List;
+
+import kr.co.bbmc.paycastdid.DidExternalVarApp;
+import kr.co.bbmc.paycastdid.model.OrderListItem;
 
 public class MenuPagerAdapter extends PagerAdapter {
 

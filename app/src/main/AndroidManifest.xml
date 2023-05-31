@@ -26,7 +26,8 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -38,23 +39,25 @@
 
         </activity>
         <receiver
-            android:name=".PayCastDidAlarmReceiver"
+            android:name=".receiver.PayCastDidAlarmReceiver"
             android:process=":remote" >
         </receiver>
-        <receiver android:name=".OnBootReceiver"
-            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+        <receiver android:name=".receiver.OnBootReceiver"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
 
-        <service android:name=".DidFirebaseMessagingService">
+        <service android:name=".service.DidFirebaseMessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".DidMainService">
+        <service android:name=".service.DidMainService">
         </service>
 
         <uses-library
