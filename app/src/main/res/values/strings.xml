@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name" translatable="false">PayCastDid</string>
+    <string name="minorVersion" translatable="false">35</string>
+    <string name="majorVersion" translatable="false">2</string>
+    <string name="paycast_tag" translatable="false">PayCast</string>
+    <string name="paycast_seq" translatable="false">SEQ</string>
+    <string name="paycast_orderlist_update" translatable="false">paycast orderlist update</string>
+    <string name="paycast_did_fcm_receive" translatable="false">paycast did fcm received</string>
+    <string name="paycast_did_network_instability" translatable="false">paycast did netwrok instability</string>
+    <string name="paycast_waitingcount_update" translatable="false">paycast waiting count update</string>
+    <string name="str_paycastdid_check_network" translatable="false">네트워크 상태를 확인해 주세요.</string>
+    <string name="str_paycastdid_network_title" translatable="false">네트워크</string>
+    <string name="str_paycastdid_strength_network" translatable="false">네트워크 장애가 발생하였습니다.</string>
+    <string name="paycast_did_network_stability" translatable="false">paycast did netwrok stability</string>
+
+</resources>

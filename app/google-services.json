@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "841727850306",
+    "firebase_url": "https://paycastdid.firebaseio.com",
+    "project_id": "paycastdid",
+    "storage_bucket": "paycastdid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841727850306:android:53e04a1f058a156a",
+        "android_client_info": {
+          "package_name": "kr.co.bbmc.paycastdid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841727850306-bb33a2qqgn9oeeaq4fh2ruu3vrab18gi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvB1PTfTBR9GtLoK6ho5zYmf5MJhXHWew"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "841727850306-bb33a2qqgn9oeeaq4fh2ruu3vrab18gi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

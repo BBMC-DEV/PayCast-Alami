@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="500dp"
+    android:minHeight="200dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/list_main_disable_text_color"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/Hint_Server"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_item_text_size"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:text="@string/Hint_Server" />
+            <EditText
+                android:layout_width="200dp"
+                android:id="@+id/server_ip_id"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:text="@string/Hint_ServerPort" />
+            <EditText
+                android:layout_width="200dp"
+                android:id="@+id/server_port_id"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edit_item_text_size"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="70dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:text="@string/Hint_SiteName" />
+            <EditText
+                android:layout_width="100dp"
+                android:id="@+id/server_site_id"
+                android:layout_height="match_parent" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:textColor="@color/black"
+                    android:gravity="center_vertical"
+                    android:text="@string/ftpActiveMode" />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:id="@+id/active_mode_id"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="@string/Hint_FtpServerConnMode" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/test_connect_id"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/edit_item_text_size"
+            android:layout_gravity="right"
+            android:text="@string/Hint_TestConnection" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/list_main_disable_text_color"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/grey"
+            android:text="@string/Hint_WatchPlayer"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="@dimen/edit_item_text_size"
+        android:weightSum="2"
+        android:background="@color/white"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:gravity="left"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:textColor="@color/black"
+                android:gravity="center_vertical"
+                android:text="@string/Hint_StartPlayer" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:id="@+id/player_play_check_id"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:gravity="right"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="@string/Hint_WatchFreqMins"
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/player_monitor_id"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/grey"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:weightSum="2"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/edit_item_text_size"
+            android:id="@+id/option_save_id"
+            android:layout_weight="1"
+            android:text="@string/Hint_Save" />
+
+        <Button
+            android:layout_height="@dimen/edit_item_text_size"
+            android:layout_width="wrap_content"
+            android:id="@+id/option_cancel_id"
+            android:layout_weight="1"
+            android:text="@string/Hint_Cancel" />
+    </LinearLayout>
+</LinearLayout>
