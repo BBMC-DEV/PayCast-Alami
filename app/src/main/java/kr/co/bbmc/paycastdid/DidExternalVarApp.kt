@@ -1,120 +1,60 @@
-package kr.co.bbmc.paycastdid;
+package kr.co.bbmc.paycastdid
 
-import android.app.Application;
-import android.util.Log;
+import android.app.Application
+import com.orhanobut.logger.AndroidLogAdapter
+import com.orhanobut.logger.Logger
+import kr.co.bbmc.paycastdid.model.BlinkAlarmData
+import kr.co.bbmc.paycastdid.model.DidAlarmData
+import kr.co.bbmc.paycastdid.model.OrderListItem
+import kr.co.bbmc.selforderutil.CommandObject
+import kr.co.bbmc.selforderutil.DidOptionEnv
 
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
+class DidExternalVarApp : Application() {
+    @JvmField
+    var mDidStbOpt: DidOptionEnv? = null
+    @JvmField
+    var token = ""
+    @JvmField
+    var newcommandList = ArrayList<CommandObject>()
+    var commandList = ArrayList<CommandObject>()
+    @JvmField
+    var alarmDataList: ArrayList<DidAlarmData> = ArrayList()
+    @JvmField
+    var blinkDataList: ArrayList<BlinkAlarmData> = ArrayList()
+    @JvmField
+    var completeList: ArrayList<DidAlarmData> = ArrayList()
+    @JvmField
+    var alarmIdList: ArrayList<String> = ArrayList()
+    private val mDidOrderList: MutableList<OrderListItem>? = ArrayList()
+    private var mWaitOrderCount = -1
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
 
-import kr.co.bbmc.paycastdid.model.BlinkAlarmData;
-import kr.co.bbmc.paycastdid.model.DidAlarmData;
-import kr.co.bbmc.paycastdid.model.OrderListItem;
-import kr.co.bbmc.selforderutil.CommandObject;
-import kr.co.bbmc.selforderutil.DidOptionEnv;
-import kr.co.bbmc.selforderutil.FileUtils;
+    override fun onCreate() {
+        super.onCreate()
+        APP = this
+        SettingEnvPersister.initPrefs(this)
+        Logger.addLogAdapter(AndroidLogAdapter())
+        Logger.w("Init APP")
+    }
 
-public class DidExternalVarApp extends Application  implements Thread.UncaughtExceptionHandler{
-    public static String TAG =	"DidExternalVarApp";
-    public static final String ACTION_SERVICE_COMMAND = "kr.co.bbmc.paycastdid.serviceCommand";
-    public static final String ACTION_ACTIVITY_UPDATE = "kr.co.bbmc.paycastdid.activityupdate";
-    public static int  MAX_ALARAM_COUNT_PER_SCREEN = 4; //8->4로 전시회를 위해 수정
-    public static boolean LOG_SAVE = true;
+    fun addMenuObject(item: OrderListItem) {
+        mDidOrderList?.add(item)
+    }
 
-    public DidOptionEnv mDidStbOpt;
-    public String token = "";
-    public ArrayList<CommandObject> newcommandList = new ArrayList<CommandObject>();
-    public ArrayList<CommandObject> commandList = new ArrayList<CommandObject>();
-    public List<DidAlarmData> alarmDataList = new ArrayList<DidAlarmData>();
-    public List<BlinkAlarmData> blinkDataList = new ArrayList<BlinkAlarmData>();
-    public List<DidAlarmData> completeList = new ArrayList<DidAlarmData>();
-    public List<String> alarmIdList = new ArrayList<String>();
+    fun removeMenuObject(item: OrderListItem) {
+        mDidOrderList?.remove(item)
+    }
 
-    private List<OrderListItem> mDidOrderList = new ArrayList<OrderListItem>();
-    private int mWaitOrderCount = -1;
-    /**
-     * Storage for the original default crash handler.
-     */
-    private Thread.UncaughtExceptionHandler defaultHandler;
-    /**
-     * Installs a new exception handler.
-     */
-    public static void installHandler() {
-        if (!(Thread.getDefaultUncaughtExceptionHandler() instanceof DidExternalVarApp)) {
-            Thread.setDefaultUncaughtExceptionHandler(new DidExternalVarApp());
+    var waitOrderCount: Int
+        get() = mWaitOrderCount
+        set(count) {
+            mWaitOrderCount = count
+            Logger.d("DID TEST setWaitOrderCount()=$mWaitOrderCount")
         }
+    val menuObject: List<OrderListItem>?
+        get() = mDidOrderList
+
+    companion object {
+        lateinit var APP: DidExternalVarApp
     }
-    public DidExternalVarApp() {
-        this.defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-    }
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        SettingEnvPersister.initPrefs(this);
-
-        Logger.addLogAdapter(new AndroidLogAdapter());
-        Logger.w("Init APP");
-    }
-
-    public void addMenuObject(OrderListItem item)
-    {
-        if(mDidOrderList!=null)
-            mDidOrderList.add(item);
-    }
-    public void removeMenuObject(OrderListItem item)
-    {
-        if(mDidOrderList!=null)
-            mDidOrderList.remove(item);
-    }
-    public int getWaitOrderCount()
-    {
-        return mWaitOrderCount;
-    }
-    public void setWaitOrderCount(int count)
-    {
-        mWaitOrderCount = count;
-        Log.d(TAG, "DID TEST setWaitOrderCount()="+mWaitOrderCount);
-    }
-
-
-    public List<OrderListItem> getMenuObject()
-    {
-        return mDidOrderList;
-    }
-
-    @Override
-    public void uncaughtException(Thread t, Throwable e) {
-        String errlog = String.format("Exception: %s\n%s", e.toString(), getStackTrace(e));
-        // Place a breakpoint here to catch application crashes
-        FileUtils.writeDebug(errlog, "PayCastDid");
-
-        Log.wtf(TAG, errlog);
-
-        //android.os.Process.killProcess(android.os.Process.myPid());
-        // Call the default handler
-        defaultHandler.uncaughtException(t, e);
-
-    }
-    /**
-     * Convert an exception into a printable stack trace.
-     * @param e the exception to convert
-     * @return the stack trace
-     */
-    private String getStackTrace(Throwable e) {
-        final Writer sw = new StringWriter();
-        final PrintWriter pw = new PrintWriter(sw);
-
-        e.printStackTrace(pw);
-        String stacktrace = sw.toString();
-        pw.close();
-
-        return stacktrace;
-    }
-
 }

@@ -1,5 +1,9 @@
 package kr.co.bbmc.paycastdid.service;
 
+import static kr.co.bbmc.paycastdid.ConstantKt.ACTION_SERVICE_COMMAND;
+import static kr.co.bbmc.paycastdid.ConstantKt.LOG_SAVE;
+import static kr.co.bbmc.paycastdid.ConstantKt.MAX_ALARAM_COUNT_PER_SCREEN;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Service;
@@ -129,7 +133,6 @@ public class DidMainService extends Service {
         File dir = FileUtils.makeDirectory(FileUtils.BBMC_DIRECTORY);
 
         mDidExterVarApp = (DidExternalVarApp) getApplication();
-        mDidExterVarApp.installHandler();
 
         mDidStbOpt = new DidOptionEnv();
         /*  Agent option    */
@@ -146,13 +149,13 @@ public class DidMainService extends Service {
         mAuthList = FileUtils.searchByFilefilter(FileUtils.BBMC_PAYCAST_DATA_DIRECTORY, "deviceid", "txt");
 
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(mDidExterVarApp.ACTION_SERVICE_COMMAND);
+        intentFilter.addAction(ACTION_SERVICE_COMMAND);
         mAgentCmdReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if(LOG)
-                    Log.e(TAG, "broadcast receiver() action="+intent.getAction()+" action="+mDidExterVarApp.ACTION_SERVICE_COMMAND);
-                if (intent.getAction().equalsIgnoreCase(mDidExterVarApp.ACTION_SERVICE_COMMAND)) {
+                    Log.e(TAG, "broadcast receiver() action="+intent.getAction()+" action="+ACTION_SERVICE_COMMAND);
+                if (intent.getAction().equalsIgnoreCase(ACTION_SERVICE_COMMAND)) {
                     Bundle b = intent.getExtras();
                     if(LOG)
                         Log.e(TAG, "broadcast receiver() 1");
@@ -969,25 +972,6 @@ public class DidMainService extends Service {
         Date nowDate = new Date(now);
 
         if ((mCheckCmAsynTask == null) || (mCheckCmAsynTask.isCancelled()) || mCheckCmAsynTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
-/*
-            if((mCommandAsynTask==null)||(mCommandAsynTask.isCancelled())||mCommandAsynTask.getStatus().equals(AsyncTask.Status.FINISHED)) {
-                needCheckCmdFlag = true;
-            }
-            else
-                needCheckCmdFlag = false;
-*/
-/*
-            if (mCheckCmAsynTask != null)
-            {
-                Date oldDate = mCheckCmAsynTask.getExecutionTime();
-                long diff = nowDate.getTime() - oldDate.getTime();
-
-                if (diff < MIN_COMMAND_CHECK_INTERVAL) {
-                    needCheckCmdFlag = false;
-                    Log.e(TAG, "DID TEST onCheckCommandForFcm() DIFF="+diff);
-                }
-            }
-*/
             if (needCheckCmdFlag) {
                 mCheckCmAsynTask = new CommandCheckAsynTask();
                 mCheckCmAsynTask.setExecutionTime(nowDate);
@@ -999,52 +983,18 @@ public class DidMainService extends Service {
 
     public void onSetFcmCommandTimer()
     {
-
 //        if(mFcmTimer==null)
         {
             if(LOG)
                 Log.e("DID TEST", "DID TEST onSetFcmCommandTimer() 1 ");
             if(LOG)
                 Log.e(TAG, " fcmCheckTask() 1 onSetFcmCommandTimer");
-/*
-
-            mFcmTimer = new Timer("mFcmTimer");
-            if(mCommandTimer==null) {
-                mCommandTimer = new Timer("mCommandTimer");
-                mCommandTimerTask = new commandTimerTask();
-                mCommandTimer.scheduleAtFixedRate(mCommandTimerTask, 0, 5000);  //3000
-            }
-*/
             if(mCmdCheckTimer==null) {
                 mCmdCheckTimer = new Timer("mCmdCheckTimer");
                 mCheckCmTimerTask = new onCheckCmdTimerTask();
                 mCmdCheckTimer.scheduleAtFixedRate(mCheckCmTimerTask, 0, 5000);  //6000
             }
-/*
-            if(mFcmCommandTask==null)
-                mFcmCommandTask = new fcmCommandTask();
-            mFcmTimer.schedule(mFcmCommandTask, MAX_FCM_TIMER);
-*/
-
         }
-/*
-        else {
-
-            if(mFcmTimer!=null) {
-                mFcmTimer.cancel();
-                mFcmCommandTask.cancel();
-            }
-            mFcmTimer = new Timer("mFcmTimer");
-            mFcmCommandTask = new fcmCommandTask();
-            mFcmTimer.schedule(mFcmCommandTask, MAX_FCM_TIMER);
-
-            if(LOG)
-                Log.e(TAG, " fcmCheckTask() 2 onSetFcmCommandTimer");
-            Log.e("DID TEST", "DID TEST onSetFcmCommandTimer() 2 ");
-
-        }
-*/
-
     }
     public void _onSetFcmCommandTimer()
     {
@@ -1057,13 +1007,6 @@ public class DidMainService extends Service {
                 Log.e(TAG, " fcmCheckTask() 1 onSetFcmCommandTimer");
 
             mFcmTimer = new Timer("mFcmTimer");
-/*
-            if(mCommandTimer==null) {
-                mCommandTimer = new Timer("mCommandTimer");
-                mCommandTimerTask = new commandTimerTask();
-                mCommandTimer.scheduleAtFixedRate(mCommandTimerTask, 0, 5000);  //3000
-            }
-*/
 
             if(mCmdCheckTimer==null) {
                 mCmdCheckTimer = new Timer("mCmdCheckTimer");
@@ -1102,7 +1045,7 @@ public class DidMainService extends Service {
             cancelFlag = true;
             if(LOG)
                 Log.e(TAG, "DID TEST fcmCheckTask() fcm timer cancel");
-            if(mDidExterVarApp.LOG_SAVE) {
+            if(LOG_SAVE) {
                 String errlog = String.format("DID TEST: fcmCheckTask() fcm timer cancel\n");
                 FileUtils.writeDebug(errlog, "PayCastDid");
             }
@@ -1127,7 +1070,7 @@ public class DidMainService extends Service {
             mFcmCommandTask = null;
             if(LOG)
                 Log.e(TAG, "DID TEST fcmCheckTask() fcm timer clear");
-            if(mDidExterVarApp.LOG_SAVE) {
+            if(LOG_SAVE) {
                 String errlog = String.format("DID TEST: fcmCheckTask() fcm timer clear\n");
                 FileUtils.writeDebug(errlog, "PayCastDid");
             }
@@ -1299,7 +1242,7 @@ public class DidMainService extends Service {
 
             if(LOG)
                 Log.d("DID TEST", "DID TEST  CommandCheckAsynTask() server command check start");
-            if(mDidExterVarApp.LOG_SAVE) {
+            if(LOG_SAVE) {
                 String errlog = String.format("DID TEST: CommandCheckAsynTask() server command check start\n");
                 FileUtils.writeDebug(errlog, "PayCastDid");
             }
@@ -1318,7 +1261,7 @@ public class DidMainService extends Service {
             }
             if(LOG)
                 Log.d("DID TEST", "DID TEST CommandCheckAsynTask() server command check end");
-            if(mDidExterVarApp.LOG_SAVE) {
+            if(LOG_SAVE) {
                 String errlog = String.format("DID TEST: CommandCheckAsynTask() server command check end %s\n", res);
                 FileUtils.writeDebug(errlog, "PayCastDid");
             }
@@ -1387,7 +1330,7 @@ public class DidMainService extends Service {
                     cmdChkRetry = -1;
                 }
 
-                if(mDidExterVarApp.LOG_SAVE) {
+                if(LOG_SAVE) {
                     String errlog = String.format("DID TEST: CommandCheckAsynTask() response!!!!! null\n");
                     FileUtils.writeDebug(errlog, "PayCastDid");
                 }
@@ -1407,7 +1350,7 @@ public class DidMainService extends Service {
                         Log.e(TAG, "onDidExeCommand StoreStay.bbmc start");
                         Log.d("DID TEST", "DID TEST onDidExeCommand StoreStay.bbmc start");
                     }
-                    if(mDidExterVarApp.LOG_SAVE) {
+                    if(LOG_SAVE) {
                         errlog = String.format("DID TEST: onDidExeCommand StoreStay.bbmc start\n");
                         FileUtils.writeDebug(errlog, "PayCastDid");
                     }
@@ -1417,7 +1360,7 @@ public class DidMainService extends Service {
                     {
                         Log.e("RecyclerViewAdapter", " storeStay.bbmc alarm ci.id="+ci.rcCommandid);
                         Log.e("DID TEST", "DID TEST onAlarmSound()ci.id="+ci.rcCommandid);
-                        if(mDidExterVarApp.LOG_SAVE) {
+                        if(LOG_SAVE) {
                             errlog = String.format("DID TEST: onAlarmSound()\n");
                             FileUtils.writeDebug(errlog, "PayCastDid");
                         }
@@ -1428,7 +1371,7 @@ public class DidMainService extends Service {
                         Log.d("DID TEST", "DID TEST onDidExeCommand StoreStay.bbmc END");
                         Log.e(TAG, "onDidExeCommand StoreStay.bbmc RESULT=" + result);
                     }
-                    if(mDidExterVarApp.LOG_SAVE) {
+                    if(LOG_SAVE) {
                         errlog = String.format("DID TEST: onDidExeCommand StoreStay.bbmc END\n");
                         FileUtils.writeDebug(errlog, "PayCastDid");
                     }
@@ -1436,7 +1379,7 @@ public class DidMainService extends Service {
                 case "StoreComplete.bbmc":                 // 주문 최종 알림 완료(DID 삭제)
                     if(LOG)
                         Log.d("DID TEST", "DID TEST onDidExeCommand StoreComplete.bbmc start");
-                    if(mDidExterVarApp.LOG_SAVE) {
+                    if(LOG_SAVE) {
                         errlog = String.format("DID TEST: onDidExeCommand StoreComplete.bbmc start\n");
                         FileUtils.writeDebug(errlog, "PayCastDid");
                     }
@@ -1445,7 +1388,7 @@ public class DidMainService extends Service {
                         Log.e(TAG, "onDidExeCommand StoreComplete.bbmc RESULT=" + result);
                         Log.d("DID TEST", "DID TEST onDidExeCommand StoreComplete.bbmc END");
                     }
-                    if(mDidExterVarApp.LOG_SAVE) {
+                    if(LOG_SAVE) {
                         errlog = String.format("DID TEST: onDidExeCommand StoreComplete.bbmc END\n");
                         FileUtils.writeDebug(errlog, "PayCastDid");
                     }
@@ -1453,7 +1396,7 @@ public class DidMainService extends Service {
                 case "StoreWaitPeople.bbmc" :   //대기자 수 update
                     if(LOG)
                         Log.d("DID TEST", "DID TEST onDidExeCommand StoreWaitPeople.bbmc start");
-                    if(mDidExterVarApp.LOG_SAVE) {
+                    if(LOG_SAVE) {
                         errlog = String.format("DID TEST: onDidExeCommand StoreWaitPeople.bbmc start\n");
                         FileUtils.writeDebug(errlog, "PayCastDid");
                     }
@@ -1462,7 +1405,7 @@ public class DidMainService extends Service {
                         Log.d("DID TEST", "DID TEST onDidExeCommand StoreWaitPeople.bbmc END");
                         Log.e(TAG, "onDidExeCommand StoreWaitPeople.bbmc RESULT=" + result);
                     }
-                    if(mDidExterVarApp.LOG_SAVE) {
+                    if(LOG_SAVE) {
                         errlog = String.format("DID TEST: onDidExeCommand StoreWaitPeople.bbmc END\n");
                         FileUtils.writeDebug(errlog, "PayCastDid");
                     }
@@ -1481,7 +1424,7 @@ public class DidMainService extends Service {
         if(!NetworkUtil.isConnected(getApplicationContext())) {
             if(LOG)
                 Log.e(TAG, "executeStoreStay() NETWROK RETURN");
-            if(mDidExterVarApp.LOG_SAVE) {
+            if(LOG_SAVE) {
                 String errlog = String.format("DID TEST: executeStoreStay() NETWROK RETURN\n");
                 FileUtils.writeDebug(errlog, "PayCastDid");
             }
@@ -1578,7 +1521,7 @@ public class DidMainService extends Service {
         if(!NetworkUtil.isConnected(getApplicationContext())) {
             if(LOG)
                 Log.e(TAG, "executeCompleteList() NETWROK RETURN");
-            if(mDidExterVarApp.LOG_SAVE) {
+            if(LOG_SAVE) {
                 String errlog = String.format("executeCompleteList() NETWROK RETURN\n");
                 FileUtils.writeDebug(errlog, "PayCastDid");
             }
@@ -1692,7 +1635,7 @@ public class DidMainService extends Service {
             int waitCount = Integer.valueOf(ci.prameter);
             if(LOG)
                 Log.e(TAG, "onDidExeCommand StoreWaitPeople.bbmc count="+waitCount);
-            if(mDidExterVarApp.LOG_SAVE) {
+            if(LOG_SAVE) {
                 String errlog = String.format("DID TEST: onDidExeCommand StoreWaitPeople.bbmc count=%d\n", waitCount);
                 FileUtils.writeDebug(errlog, "PayCastDid");
             }
@@ -1869,7 +1812,7 @@ public class DidMainService extends Service {
 
             //copyStbOption(mDidExterVarApp.mDidStbOpt, tempDidOpt);
             DidAlarmData tempDidOptData = null;
-            List<String> alarmIdList = new ArrayList<>();
+            ArrayList<String> alarmIdList = new ArrayList<>();
 
             while (eventType != XmlPullParser.END_DOCUMENT) {
 
@@ -2013,8 +1956,8 @@ public class DidMainService extends Service {
                                         tempDidOptData.updateDate = dateFormat.format(date);
 
                                         int limit = 0;
-                                        if(mDidExterVarApp.alarmDataList.size()>(mDidExterVarApp.MAX_ALARAM_COUNT_PER_SCREEN-1))
-                                            limit= mDidExterVarApp.MAX_ALARAM_COUNT_PER_SCREEN-1;
+                                        if(mDidExterVarApp.alarmDataList.size()>(MAX_ALARAM_COUNT_PER_SCREEN-1))
+                                            limit= MAX_ALARAM_COUNT_PER_SCREEN-1;
                                         else
                                             limit = mDidExterVarApp.alarmDataList.size();
                                         //Log.d(TAG, "alarm limit="+limit+" index="+index+" size()="+mDidExterVarApp.alarmDataList.size());
@@ -2328,7 +2271,7 @@ public class DidMainService extends Service {
     public int getIndexAddPos(List<DidAlarmData> list, DidAlarmData newitem) {
         SimpleDateFormat dateFormat = new  SimpleDateFormat("yyyy-MM-dd HH:mm:ss.s");
 
-        for(int i = 0; i<mDidExterVarApp.MAX_ALARAM_COUNT_PER_SCREEN; i++)
+        for(int i = 0; i<MAX_ALARAM_COUNT_PER_SCREEN; i++)
         {
             DidAlarmData item = list.get(i);
             Date date1 = null;

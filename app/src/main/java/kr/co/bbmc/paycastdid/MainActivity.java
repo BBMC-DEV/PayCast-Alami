@@ -1,5 +1,8 @@
 package kr.co.bbmc.paycastdid;
 
+import static kr.co.bbmc.paycastdid.ConstantKt.ACTION_ACTIVITY_UPDATE;
+import static kr.co.bbmc.paycastdid.ConstantKt.LOG_SAVE;
+
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -26,6 +29,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
@@ -50,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements DidMainService.Ca
         if (mDidlist == null)
             mDidlist = new ArrayList<>();
         else {
-            mDidExterVarApp.alarmDataList = SettingEnvPersister.getDidAlarmOrderList();
+            mDidExterVarApp.alarmDataList = (ArrayList<DidAlarmData>) SettingEnvPersister.getDidAlarmOrderList();
 
             if (mDidExterVarApp.alarmDataList == null)
                 mDidExterVarApp.alarmDataList = new ArrayList<>();
@@ -181,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements DidMainService.Ca
 
                     blinkItem.animation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink);
                     mDidExterVarApp.blinkDataList.add(blinkItem);
+
                     RecyclerViewAdapter.ViewHolder v = mRecyclerAdapter.getViewHold(order);
                     if (v != null) {
                         if (v.textView != null) {
@@ -568,7 +574,7 @@ public class MainActivity extends AppCompatActivity implements DidMainService.Ca
         } else if (cmd.command.equalsIgnoreCase(getString(R.string.paycast_orderlist_update)))   //order list update
         {
             Intent sendIntent = new Intent(mContext, MainActivity.class);
-            sendIntent.setAction(mDidExterVarApp.ACTION_ACTIVITY_UPDATE);
+            sendIntent.setAction(ACTION_ACTIVITY_UPDATE);
             startActivity(sendIntent);
         } else if (cmd.command.equalsIgnoreCase(getString(R.string.paycast_waitingcount_update)))   //waiting count update
         {
@@ -584,7 +590,7 @@ public class MainActivity extends AppCompatActivity implements DidMainService.Ca
                     if ((mAlert != null) && (mAlert.isShowing()))
                         mAlert.dismiss();
 
-                    if (mDidExterVarApp.LOG_SAVE) {
+                    if (LOG_SAVE) {
                         String errlog = String.format("DID TEST: onDidExeCommand StoreWaitPeople.bbmc=%d display\n", mDidExterVarApp.getWaitOrderCount());
                         // Place a breakpoint here to catch application crashes
                         FileUtils.writeDebug(errlog, "PayCastDid");
@@ -668,7 +674,7 @@ public class MainActivity extends AppCompatActivity implements DidMainService.Ca
         String action = intent.getAction();
         Logger.w("action : " + action);
         if (action == null) return;
-        if (action.equalsIgnoreCase(mDidExterVarApp.ACTION_ACTIVITY_UPDATE)) {
+        if (action.equalsIgnoreCase(ACTION_ACTIVITY_UPDATE)) {
             if ((mAlert != null) && (mAlert.isShowing()))
                 mAlert.dismiss();
             List<DidAlarmData> delList = new ArrayList<>();
@@ -756,7 +762,8 @@ public class MainActivity extends AppCompatActivity implements DidMainService.Ca
                 mRecyclerAdapter.mValues.clear();
             }
             SettingEnvPersister.setDidOrderList(mDidlist);
-            SettingEnvPersister.setDidAlarmOrderList(mDidExterVarApp.alarmDataList);
+            List<DidAlarmData > list = (List<DidAlarmData>) Objects.requireNonNull(mDidExterVarApp.alarmDataList);
+            SettingEnvPersister.setDidAlarmOrderList(list);
 
             for (int i = 0; i < delList.size(); i++) {
                 DidAlarmData item = delList.get(i);
@@ -773,7 +780,7 @@ public class MainActivity extends AppCompatActivity implements DidMainService.Ca
                 if (LOG)
                     Log.e("DID TEST", "DID TEST eRROR!!!!!!");
             }
-            if (mDidExterVarApp.LOG_SAVE) {
+            if (LOG_SAVE) {
                 String errlog = String.format("DID TEST: DID TEST  실제 DID display 대기 %d\n", mDidExterVarApp.getWaitOrderCount());
                 FileUtils.writeDebug(errlog, "PayCastDid");
             }

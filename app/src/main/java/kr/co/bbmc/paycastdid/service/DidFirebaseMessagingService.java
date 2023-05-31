@@ -1,5 +1,7 @@
 package kr.co.bbmc.paycastdid.service;
 
+import static kr.co.bbmc.paycastdid.ConstantKt.ACTION_SERVICE_COMMAND;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,16 +71,7 @@ public class DidFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-/*
-        String title = remoteMessage.getNotification().getTitle();
-        Log.i(TAG, "onMessageReceived  fcm received!! title="+title);
-        Log.e("DID TEST", "DID TEST onMessageReceived  fcm received!! title="+title);
-        if(mDidExterVarApp.LOG_SAVE) {
-            String errlog = String.format("DID TEST: DID TEST onMessageReceived  fcm received!!\n");
-            // Place a breakpoint here to catch application crashes
-            FileUtils.writeDebug(errlog, "PayCastDid");
-        }
-*/
+
         Logger.e("Firebasae msg received : " + remoteMessage.getMessageId());
         PlayerCommand command = new PlayerCommand();
         Date currentTime = Calendar.getInstance().getTime();
@@ -88,7 +81,7 @@ public class DidFirebaseMessagingService extends FirebaseMessagingService {
         command.executeDateTime = simpleDateFormat.format(currentTime);
         command.requestDateTime = simpleDateFormat.format(currentTime);
 
-        Intent sendIntent = new Intent(mDidExterVarApp.ACTION_SERVICE_COMMAND);
+        Intent sendIntent = new Intent(ACTION_SERVICE_COMMAND);
         Bundle b = new Bundle();
         b.putString("executeDateTime", command.executeDateTime);
         b.putString("requestDateTime", command.requestDateTime);
