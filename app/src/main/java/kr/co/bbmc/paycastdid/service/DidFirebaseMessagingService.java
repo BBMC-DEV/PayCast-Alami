@@ -1,6 +1,7 @@
 package kr.co.bbmc.paycastdid.service;
 
 import static kr.co.bbmc.paycastdid.ConstantKt.ACTION_SERVICE_COMMAND;
+import static kr.co.bbmc.paycastdid.ConstantKt.getFirebaseMsg;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.orhanobut.logger.Logger;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import kr.co.bbmc.paycastdid.DidExternalVarApp;
 import kr.co.bbmc.paycastdid.R;
@@ -73,6 +75,7 @@ public class DidFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         Logger.e("Firebasae msg received : " + remoteMessage.getMessageId());
+        getFirebaseMsg().onNext(Objects.requireNonNull(remoteMessage.getMessageId()));
         PlayerCommand command = new PlayerCommand();
         Date currentTime = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat =

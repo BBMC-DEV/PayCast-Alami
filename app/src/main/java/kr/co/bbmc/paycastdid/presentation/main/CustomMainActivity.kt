@@ -1,4 +1,4 @@
-package kr.co.bbmc.paycastdid.main
+package kr.co.bbmc.paycastdid.presentation.main
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
