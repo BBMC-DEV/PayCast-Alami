@@ -49,8 +49,7 @@ class CustomMainActivity: ComponentActivity() {
                 AdNetTheme {
                     Surface {
                         Modifier.padding(vertical = 20.dp)
-                        //MainMenuScreen(mainMenuViewModel)
-                        PaymentActivity()
+                        MainScreen(vm)
                     }
                 }
             }
@@ -61,7 +60,7 @@ class CustomMainActivity: ComponentActivity() {
     private fun initData() {
         //TODO: xml parser로 스토어 정보와 deviceId 정보 가져오기
         vm.checkDirectory()
-        checkDeviceDpi()
+        vm.setDp(checkDeviceDpi())
         loadDidInfoFromXmlFiles()
     }
 

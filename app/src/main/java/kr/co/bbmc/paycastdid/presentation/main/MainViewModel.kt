@@ -1,5 +1,7 @@
 package kr.co.bbmc.paycastdid.presentation.main
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +24,10 @@ class MainViewModel: BaseViewModel() {
 
     private val _didInfo = MutableStateFlow<List<CookingData>?>(null)
     val didInfo = _didInfo.asStateFlow()
+
+    var _dpInfo = MutableLiveData<String>()
+    val dpInfo = _dpInfo
+    fun setDp(dp: String) = _dpInfo.postValue(dp)
 
     fun getDidInfo(): Job = viewModelScope.launch(Dispatchers.IO + baseExceptionHandler() {
         Logger.e("Get orderNum error - $it")
