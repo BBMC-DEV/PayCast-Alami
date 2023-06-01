@@ -2,20 +2,30 @@ package kr.co.bbmc.paycastdid.presentation.main
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Surface
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
+import androidx.activity.compose.setContent
 import com.orhanobut.logger.Logger
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.kotlin.addTo
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kr.co.bbmc.paycast.ui.component.theme.AdNetTheme
 import kr.co.bbmc.paycastdid.deviceId
+import kr.co.bbmc.paycastdid.firebaseMsg
 import kr.co.bbmc.paycastdid.storeId
 import kr.co.bbmc.paycastdid.util.parsePlayerOptionXMLV2
 import kr.co.bbmc.paycastdid.util.repeatOnState
@@ -23,7 +33,7 @@ import kr.co.bbmc.selforderutil.FileUtils
 import java.io.File
 
 @FlowPreview
-class CustomMainActivity: AppCompatActivity() {
+class CustomMainActivity: ComponentActivity() {
 
     private lateinit var vm: MainViewModel
 
@@ -33,15 +43,17 @@ class CustomMainActivity: AppCompatActivity() {
 
         Logger.w("MainActivity : onCreate!!")
         WindowCompat.setDecorFitsSystemWindows(window, false)
-//        setContent {
-//            run {
-//                AdNetTheme {
-//                    Surface {
-//                        //PaymentScreen()
-//                    }
-//                }
-//            }
-//        }
+        setContent {
+            run {
+                AdNetTheme {
+                    Surface {
+                        Modifier.padding(vertical = 20.dp)
+                        //MainMenuScreen(mainMenuViewModel)
+                        PaymentActivity()
+                    }
+                }
+            }
+        }
         requestPermission()
         observerData()
     }
@@ -94,6 +106,16 @@ class CustomMainActivity: AppCompatActivity() {
     }
 
     private fun observerData() {
+
+        firebaseMsg.observeOn(Schedulers.io())
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Logger.w("Firebase msg updated! - $it")
+                vm.getDidInfo()
+            }, {
+                vm.sendToast(it.message ?: "Error")
+            })
+            .addTo(vm.compositeDisposable)
 
         vm.toast.observe(this) {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()

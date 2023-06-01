@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 open class BaseViewModel() : ViewModel() {
 
-    private val compositeDisposable = CompositeDisposable()
+    val compositeDisposable = CompositeDisposable()
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String> = _toast

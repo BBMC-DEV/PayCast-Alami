@@ -16,7 +16,7 @@ class DidRepository {
 
     // did info list
     suspend fun getDidInfo(): Flow<ResDidData> = flow {
-        emit(baseApiProvider.getStoreState(storeId = storeId, deviceId = deviceId))
+        emit(baseApiProvider.getCookingList(storeId = storeId, deviceId = deviceId))
     }.debounce(1000L)
 
 }

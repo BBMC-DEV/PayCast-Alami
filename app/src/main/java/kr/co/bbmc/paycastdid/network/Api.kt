@@ -6,8 +6,8 @@ import retrofit2.http.Query
 
 interface Api {
     // 서버 싱크
-    @GET("/info/storeState")
-    suspend fun getStoreState(
+    @GET("/info/orderList")
+    suspend fun getCookingList(
         @Query("storeId") storeId: Int,
         @Query("deviceId") deviceId: String,
     ): ResDidData
