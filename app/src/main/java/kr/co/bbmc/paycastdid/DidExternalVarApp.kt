@@ -3,12 +3,15 @@ package kr.co.bbmc.paycastdid
 import android.app.Application
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger
+import kotlinx.coroutines.FlowPreview
 import kr.co.bbmc.paycastdid.model.BlinkAlarmData
 import kr.co.bbmc.paycastdid.model.DidAlarmData
 import kr.co.bbmc.paycastdid.model.OrderListItem
+import kr.co.bbmc.paycastdid.repository.DidRepository
 import kr.co.bbmc.selforderutil.CommandObject
 import kr.co.bbmc.selforderutil.DidOptionEnv
 
+@FlowPreview
 class DidExternalVarApp : Application() {
     @JvmField
     var mDidStbOpt: DidOptionEnv? = null
@@ -28,6 +31,7 @@ class DidExternalVarApp : Application() {
     private val mDidOrderList: MutableList<OrderListItem>? = ArrayList()
     private var mWaitOrderCount = -1
 
+    val repository by lazy { DidRepository() }
 
     override fun onCreate() {
         super.onCreate()

@@ -4,13 +4,13 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flow
+import kr.co.bbmc.paycastdid.deviceId
 import kr.co.bbmc.paycastdid.network.ApiProvider
 import kr.co.bbmc.paycastdid.network.model.ResDidData
-import kr.co.bbmc.paycastdid.deviceId
 import kr.co.bbmc.paycastdid.storeId
 
 @FlowPreview
-class DidRepository() {
+class DidRepository {
 
     private val baseApiProvider by lazy { ApiProvider.getBaseApi() }
 
