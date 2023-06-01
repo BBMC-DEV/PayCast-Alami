@@ -10,5 +10,5 @@ data class CookingData(
     val orderNumber: Int = 0,
     val menuName: String? = "",
     val count: Int = 0,
-    val cookingState: String = "O"   // N :stay 대기중, O : complete 조리완료, delete: 수령완료
+    val cookingState: String = "O"   // N :stay 대기중, O : complete 조리완료, delete: 수령완료(X)
 )

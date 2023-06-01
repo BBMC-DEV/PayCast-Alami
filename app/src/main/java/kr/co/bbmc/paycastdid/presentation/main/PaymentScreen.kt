@@ -1,9 +1,6 @@
 package kr.co.bbmc.paycastdid.presentation.main
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,12 +16,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kr.bbmc.signcast.adnet.ui.component.backgroundAnim
 
 @Preview(widthDp = 1080, heightDp = 1920)
 @Composable
 fun PaymentActivity() {
     // 최종 결제 금액 viewModel 에서 가져올 것
     val paymentAmount = 10000
+    val transition = rememberInfiniteTransition()
+    val scale by transition.backgroundAnim()
 
     Column(
         modifier = Modifier
@@ -38,7 +39,7 @@ fun PaymentActivity() {
         Text(
             text = "GGG",
             fontSize = 40.sp,
-            color = Color.Red,
+            color = Color.Red.copy(scale),
             modifier = Modifier
                 .padding(bottom = 40.dp)
         )

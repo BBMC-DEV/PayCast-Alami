@@ -27,6 +27,7 @@ import kr.co.bbmc.paycast.ui.component.theme.AdNetTheme
 import kr.co.bbmc.paycastdid.deviceId
 import kr.co.bbmc.paycastdid.firebaseMsg
 import kr.co.bbmc.paycastdid.storeId
+import kr.co.bbmc.paycastdid.util.checkDeviceDpi
 import kr.co.bbmc.paycastdid.util.parsePlayerOptionXMLV2
 import kr.co.bbmc.paycastdid.util.repeatOnState
 import kr.co.bbmc.selforderutil.FileUtils
@@ -60,6 +61,7 @@ class CustomMainActivity: ComponentActivity() {
     private fun initData() {
         //TODO: xml parser로 스토어 정보와 deviceId 정보 가져오기
         vm.checkDirectory()
+        checkDeviceDpi()
         loadDidInfoFromXmlFiles()
     }
 
