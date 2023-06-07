@@ -41,7 +41,7 @@ fun MainScreen(vm: MainViewModel) {
 
     didItems?.keys?.forEach { key ->
         val values = didItems[key]
-        Logger.e("윤영 Group by Test == Key : $key, Values: $values")
+        Logger.e("Group by Test == Key : $key, Values: $values")
     }
 
     Column {
