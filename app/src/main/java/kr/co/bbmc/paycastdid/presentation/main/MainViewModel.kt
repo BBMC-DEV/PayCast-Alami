@@ -18,9 +18,11 @@ import kr.co.bbmc.paycastdid.network.model.CookingData
 import kr.co.bbmc.paycastdid.util.baseExceptionHandler
 import kr.co.bbmc.selforderutil.FileUtils
 import java.io.File
+import java.util.*
+import kotlin.concurrent.scheduleAtFixedRate
 
 @FlowPreview
-class MainViewModel: BaseViewModel() {
+class MainViewModel : BaseViewModel() {
 
     private val _didInfo = MutableStateFlow<List<CookingData>?>(null)
     val didInfo = _didInfo.asStateFlow()
@@ -28,6 +30,12 @@ class MainViewModel: BaseViewModel() {
     var _dpInfo = MutableLiveData<String>()
     val dpInfo = _dpInfo
     fun setDp(dp: String) = _dpInfo.postValue(dp)
+
+    private var didInfoTimer: Timer? = null
+
+    init {
+        didInfoTimer = Timer()
+    }
 
     fun getDidInfo(): Job = viewModelScope.launch(Dispatchers.IO + baseExceptionHandler() {
         Logger.e("Get orderNum error - $it")
@@ -41,6 +49,12 @@ class MainViewModel: BaseViewModel() {
             }
     }
 
+    override fun onCleared() {
+        super.onCleared()
+        didInfoTimer?.cancel()
+        didInfoTimer = null
+    }
+
     fun checkDirectory() {
         var defaultDir = File(FileUtils.BBMC_DEFAULT_DIR)
         if (!defaultDir.exists()) defaultDir.mkdir()
@@ -50,5 +64,15 @@ class MainViewModel: BaseViewModel() {
         if (!defaultDir.exists()) defaultDir.mkdir()
         defaultDir = File(FileUtils.BBMC_PAYCAST_BG_DIRECTORY)
         if (!defaultDir.exists()) defaultDir.mkdir()
+    }
+
+    fun repeatTask() {
+        didInfoTimer?.let {
+            it.scheduleAtFixedRate(SCHEDULE_DID_INFO_CYCLE_PERIOD, SCHEDULE_DID_INFO_CYCLE_PERIOD) { getDidInfo() }
+        }
+    }
+
+    companion object {
+        const val SCHEDULE_DID_INFO_CYCLE_PERIOD = (2 * 60 * 1000).toLong()
     }
 }
