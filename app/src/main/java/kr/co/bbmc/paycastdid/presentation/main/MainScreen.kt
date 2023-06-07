@@ -10,23 +10,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.asFlow
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.delay
 import kr.co.bbmc.paycastdid.R
 
 
@@ -38,6 +33,7 @@ fun MainScreen(vm: MainViewModel) {
     val isVisible = vm.isVisible.asFlow().collectAsState(false).value
 
     Logger.e("윤영 didItems : ${didItems.toString()}")
+    val orderCount = didItems?.keys?.size ?: 0
 
     didItems?.keys?.forEach { key ->
         val values = didItems[key]
@@ -122,7 +118,7 @@ fun MainScreen(vm: MainViewModel) {
                     contentScale = ContentScale.Crop
                 )
                 Text(
-                    text = "대기 0",
+                    text = "대기: $orderCount",
                     fontSize = 50.sp,
                     modifier = Modifier
                         .fillMaxSize()

@@ -78,6 +78,6 @@ class MainViewModel: BaseViewModel() {
     }
 
     companion object {
-        const val SCHEDULE_DID_INFO_CYCLE_PERIOD = (2 * 60 * 1000).toLong()
+        const val SCHEDULE_DID_INFO_CYCLE_PERIOD = (1 * 60 * 1000).toLong()
     }
 }
