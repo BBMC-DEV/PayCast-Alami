@@ -29,6 +29,11 @@ class MainViewModel: BaseViewModel() {
     val dpInfo = _dpInfo
     fun setDp(dp: String) = _dpInfo.postValue(dp)
 
+    private val _isVisible = MutableLiveData(false)
+    val isVisible = _isVisible
+
+    fun isVisible(visible: Boolean) = _isVisible.postValue(visible)
+
     fun getDidInfo(): Job = viewModelScope.launch(Dispatchers.IO + baseExceptionHandler() {
         Logger.e("Get orderNum error - $it")
         sendToast("Network Error: $it")
