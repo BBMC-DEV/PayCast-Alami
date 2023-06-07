@@ -96,6 +96,7 @@ class CustomMainActivity: ComponentActivity() {
                 true -> {
                     Logger.w("Success xml parse: StoreId - $storeId & DeviceId - $deviceId")
                     vm.getDidInfo()
+                    vm.repeatTask()
                 }
                 else -> { Logger.e("Parse Err")
                     vm.sendToast("xml정보를 읽어올수 없습니다.")
@@ -113,6 +114,7 @@ class CustomMainActivity: ComponentActivity() {
             .subscribe({
                 Logger.w("Firebase msg updated! - $it")
                 vm.getDidInfo()
+                vm.sendToast("Firebase msg updated! - $it")
             }, {
                 vm.sendToast(it.message ?: "Error")
             })
