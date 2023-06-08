@@ -12,3 +12,9 @@ data class CookingData(
     val count: Int = 0,
     val cookingState: String = "O"   // N :stay 대기중, O : complete 조리완료, delete: 수령완료(X)
 )
+
+data class ResRegisterToken(
+    val data: String? = null,
+    val message: String? = "",
+    val success: Boolean
+)

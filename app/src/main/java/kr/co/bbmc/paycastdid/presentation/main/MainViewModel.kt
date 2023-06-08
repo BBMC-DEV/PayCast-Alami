@@ -54,6 +54,22 @@ class MainViewModel: BaseViewModel() {
             }
     }
 
+    fun registerToken(token: String): Job = viewModelScope.launch(Dispatchers.IO + baseExceptionHandler() {
+        Logger.e("Register Token Error - $it")
+        sendToast("Network Error: $it")
+    }) {
+        APP.repository.registerFCMToken(token = token)
+            .retry(2)
+            .collectLatest {
+                Logger.d("Token register result : $it")
+                val msg = when(it.success) {
+                    true -> "토큰등록이 성공하였습니다."
+                    else -> it.message ?: ""
+                }
+                sendToast(msg.ifEmpty {"토큰등록에 실패하였습니다."})
+            }
+    }
+
     override fun onCleared() {
         super.onCleared()
         didInfoTimer?.cancel()

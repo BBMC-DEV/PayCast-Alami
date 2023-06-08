@@ -233,16 +233,13 @@ public class MainActivity extends AppCompatActivity implements DidMainService.Ca
                     @Override
                     public void onComplete(Task<InstanceIdResult> task) {
                         if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            Logger.e("getInstanceId failed", task.getException());
                             return;
                         }
-
                         // Get new Instance ID token
                         String token = task.getResult().getToken();
-
                         // Log and toast
-                        if (LOG)
-                            Log.d(TAG, "getTogken : " + token);
+                        Logger.e("getTogken : " + token);
                         mDidExterVarApp.token = token;
                         if (fcmTokenTimer == null) {
                             if (LOG)

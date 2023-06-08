@@ -3,7 +3,7 @@ package kr.co.bbmc.paycastdid.presentation.main
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
@@ -11,9 +11,11 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.normal.TedPermission
-import androidx.activity.compose.setContent
 import com.orhanobut.logger.Logger
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.addTo
@@ -28,10 +30,10 @@ import kr.co.bbmc.paycastdid.deviceId
 import kr.co.bbmc.paycastdid.firebaseMsg
 import kr.co.bbmc.paycastdid.storeId
 import kr.co.bbmc.paycastdid.util.checkDeviceDpi
+import kr.co.bbmc.paycastdid.util.delayRun
 import kr.co.bbmc.paycastdid.util.parsePlayerOptionXMLV2
 import kr.co.bbmc.paycastdid.util.repeatOnState
 import kr.co.bbmc.selforderutil.FileUtils
-import java.io.File
 
 @FlowPreview
 class CustomMainActivity: ComponentActivity() {
@@ -58,10 +60,35 @@ class CustomMainActivity: ComponentActivity() {
         observerData()
     }
     private fun initData() {
+        getFcmToken()
         //TODO: xml parser로 스토어 정보와 deviceId 정보 가져오기
         vm.checkDirectory()
         vm.setDp(checkDeviceDpi())
         loadDidInfoFromXmlFiles()
+    }
+
+    private fun getFcmToken() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener<InstanceIdResult> { task ->
+                if (!task.isSuccessful) {
+                    Logger.e("getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+                // Get new Instance ID token
+                val token = task.result!!.token
+                // Log and toast
+                Logger.e("get Togken : $token")
+                //TODO: firebase token send to server!!!
+                vm.registerToken(token)
+                //sendRegistrationToServer(token)
+//                mDidExterVarApp.token = token
+//                if (MainActivity.fcmTokenTimer == null) {
+//                    if (LOG) Log.e(MainActivity.TAG, "fcmTokenTimerTask() SET")
+//                    MainActivity.fcmTokenTimer = Timer("fcmTokenTimer")
+//                    MainActivity.fcmTokenTimer.schedule(fcmTokenTimerTask(), 1000)
+//                }
+            })
+
     }
 
     private fun requestPermission() {
@@ -113,7 +140,7 @@ class CustomMainActivity: ComponentActivity() {
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Logger.w("Firebase msg updated! - $it")
-                vm.getDidInfo()
+                delayRun({ vm.getDidInfo() }, 700L)
                 vm.sendToast("Firebase msg updated! - $it")
             }, {
                 vm.sendToast(it.message ?: "Error")
