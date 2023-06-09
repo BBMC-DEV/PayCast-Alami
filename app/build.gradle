@@ -132,6 +132,9 @@ dependencies {
     // glide
     implementation "com.github.skydoves:landscapist-glide:$glide_version"
 
+    // coil
+    implementation("io.coil-kt:coil-compose:2.4.0")
+
     // lottie
     implementation "com.airbnb.android:lottie-compose:$lottieVersion"
 

@@ -5,24 +5,31 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement.Bottom
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.asFlow
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.orhanobut.logger.Logger
 import kotlinx.coroutines.FlowPreview
 import kr.co.bbmc.paycastdid.R
+import kr.co.bbmc.selforderutil.FileUtils
+import java.io.File
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -32,31 +39,38 @@ fun MainScreen(vm: MainViewModel) {
     val didItems = vm.didInfo.collectAsState().value?.groupBy { it.orderNumber }
     val isVisible = vm.isVisible.asFlow().collectAsState(false).value
 
-    Logger.e("윤영 didItems : ${didItems.toString()}")
+    val imgFile = File(FileUtils.BBMC_PAYCAST_BG_DIRECTORY + "background.jpg")
+    Logger.e("imgFile : $imgFile")
+    val resource = if(!imgFile.exists()) R.drawable.bg_default else imgFile
     val orderCount = didItems?.keys?.size ?: 0
 
     didItems?.keys?.forEach { key ->
         val values = didItems[key]
     }
-
+    AsyncImage(
+        model = ImageRequest.Builder(LocalContext.current).data(resource).build(),
+        contentDescription = null,
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
+        contentScale = ContentScale.Crop
+    )
     Column {
-        Image(
-            painter = painterResource(id = R.drawable.sample_rabbit),
-            contentDescription = null,
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight(0.6f),
-            contentScale = ContentScale.Crop
         )
         Row(
             modifier = Modifier
-                .background(Color.White)
+                .background(Color.Transparent)
         ) {
             LazyRow(
                 modifier = Modifier
                     .fillMaxHeight()
                     .fillMaxWidth(0.7f)
                     .padding(10.dp)
+                    //.align(alignment = Alignment.Bottom)
             ) {
                 didItems?.forEach { (key, values) ->
                     item {
@@ -106,16 +120,8 @@ fun MainScreen(vm: MainViewModel) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.White)
+                    .background(Color.Transparent)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.sample_cocatu),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(0.7f),
-                    contentScale = ContentScale.Crop
-                )
                 Text(
                     text = "대기: $orderCount",
                     fontSize = 50.sp,
