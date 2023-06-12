@@ -1,5 +1,10 @@
 package kr.co.bbmc.paycastdid.presentation.main
 
+import android.media.MediaPlayer
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -14,6 +19,7 @@ import kotlinx.coroutines.flow.retry
 import kotlinx.coroutines.launch
 import kr.co.bbmc.paycastdid.BaseViewModel
 import kr.co.bbmc.paycastdid.DidExternalVarApp.Companion.APP
+import kr.co.bbmc.paycastdid.R
 import kr.co.bbmc.paycastdid.network.model.CookingData
 import kr.co.bbmc.paycastdid.util.baseExceptionHandler
 import kr.co.bbmc.selforderutil.FileUtils
@@ -33,14 +39,14 @@ class MainViewModel: BaseViewModel() {
 
     private var didInfoTimer: Timer? = null
 
+    private val _newDidOrder = MutableLiveData(false)
+    val newDidOrder = _newDidOrder
+    fun newDidOrder(order: Boolean) = _newDidOrder.postValue(order)
+
+
     init {
         didInfoTimer = Timer()
     }
-
-    private val _isVisible = MutableLiveData(false)
-    val isVisible = _isVisible
-
-    fun isVisible(visible: Boolean) = _isVisible.postValue(visible)
 
     fun getDidInfo(): Job = viewModelScope.launch(Dispatchers.IO + baseExceptionHandler() {
         Logger.e("Get orderNum error - $it")
@@ -51,6 +57,7 @@ class MainViewModel: BaseViewModel() {
             .collectLatest {
                 Logger.w("DidData : ${it.data}")
                 _didInfo.value = it.data
+                newDidOrder(true)
             }
     }
 
