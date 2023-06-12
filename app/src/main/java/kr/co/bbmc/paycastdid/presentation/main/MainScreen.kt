@@ -169,13 +169,14 @@ fun MainScreen(vm: MainViewModel) {
                                             color = if (data.cookingState == "N") Color.Black else Color.Red,
                                             modifier = Modifier.basicMarquee()
                                         )
-                                        Spacer(Modifier.height(16.dp))
+                                        Spacer(Modifier.width(16.dp))
                                         Text(
                                             text = data.count.toString(),
                                             fontSize = 45.sp,
                                             color = Color.DarkGray
                                         )
                                     }
+                                    Spacer(Modifier.height(8.dp))
                                 }
                             }
                         }
@@ -185,8 +186,9 @@ fun MainScreen(vm: MainViewModel) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.Transparent),
-                contentAlignment = Alignment.BottomCenter
+                    .background(Color.Transparent)
+                    .padding(bottom = 24.dp, end = 24.dp),
+                contentAlignment = Alignment.BottomEnd
             ) {
                 Text(
                     text = "대기 : $orderCount",
