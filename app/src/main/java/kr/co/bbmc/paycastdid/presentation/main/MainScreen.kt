@@ -45,15 +45,8 @@ fun MainScreen(vm: MainViewModel) {
     val newDidOrder = vm.newDidOrder.observeAsState()
     Logger.e("새로 들어온 주문 유무 : ${newDidOrder.value}")
 
-    val context = LocalContext.current
-    val soundPlayer = MediaPlayer.create(context, R.raw.alarmsound)
-
     val idxNum = remember { mutableStateOf(-1) }
-
     val bgColor = remember { Animatable(Color.Transparent) }
-    if (vm.newDidOrder.value == true) {
-        soundPlayer.start()
-    }
 
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current).data(resource).build(),

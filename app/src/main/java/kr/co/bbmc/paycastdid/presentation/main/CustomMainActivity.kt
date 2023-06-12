@@ -1,5 +1,6 @@
 package kr.co.bbmc.paycastdid.presentation.main
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -26,6 +27,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kr.co.bbmc.paycast.ui.component.theme.AdNetTheme
+import kr.co.bbmc.paycastdid.R
 import kr.co.bbmc.paycastdid.deviceId
 import kr.co.bbmc.paycastdid.firebaseMsg
 import kr.co.bbmc.paycastdid.storeId
@@ -39,10 +41,12 @@ import kr.co.bbmc.selforderutil.FileUtils
 class CustomMainActivity: ComponentActivity() {
 
     private lateinit var vm: MainViewModel
+    private lateinit var soundPlayer: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vm = ViewModelProvider(this)[MainViewModel::class.java]
+        soundPlayer = MediaPlayer.create(this, R.raw.alarmsound)
 
         Logger.w("MainActivity : onCreate!!")
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -154,8 +158,10 @@ class CustomMainActivity: ComponentActivity() {
         repeatOnState(Lifecycle.State.RESUMED) {
             vm.didInfo.collectLatest {
                 Logger.e("Cooking info changes : $it")
+                it?.let {
+                    if(::soundPlayer.isInitialized) soundPlayer.start()
+                }
             }
         }
-
     }
 }
