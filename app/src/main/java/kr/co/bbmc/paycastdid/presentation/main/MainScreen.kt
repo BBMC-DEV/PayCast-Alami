@@ -46,7 +46,7 @@ fun MainScreen(vm: MainViewModel) {
     val newDidOrder = vm.newDidOrder.observeAsState()
     Logger.e("새로 들어온 주문 유무 : ${newDidOrder.value}")
 
-    val idxNum = remember { mutableStateOf(-1) }
+    val idxNum = remember { mutableStateOf(0) }
     val bgColor = remember { Animatable(Color.Transparent) }
 
     AsyncImage(
@@ -84,7 +84,7 @@ fun MainScreen(vm: MainViewModel) {
                                 bgColor.animateTo(Color.LightGray, tween(500
                                 ))
                             }
-                            if (didItems?.get(idxNum.value)?.any { it.cookingState == "O" }!!) {
+                            if (didItems?.get(idxNum.value)?.any { it.cookingState == "O" } == true) {
                                 bgColor.animateTo(Color.Red)
                             } else {
                                 bgColor.animateTo(Color.Transparent)
