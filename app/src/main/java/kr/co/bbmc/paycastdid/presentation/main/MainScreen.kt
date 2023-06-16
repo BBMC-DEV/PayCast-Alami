@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -79,8 +80,9 @@ fun MainScreen(vm: MainViewModel) {
                     if (vm.newDidOrder.value == true) {
                         LaunchedEffect(Unit) {
                             repeat(5) {
-                                bgColor.animateTo(Color.Red, tween(1000))
-                                bgColor.animateTo(Color.LightGray, tween(1000))
+                                bgColor.animateTo(Color.Red, tween(500))
+                                bgColor.animateTo(Color.LightGray, tween(500
+                                ))
                             }
                             if (didItems?.get(idxNum.value)?.any { it.cookingState == "O" }!!) {
                                 bgColor.animateTo(Color.Red)
@@ -155,18 +157,25 @@ fun MainScreen(vm: MainViewModel) {
                                     it.second
                                 }
                                 items(splitList) { data ->
-                                    Row {
+                                    Row (
+                                        modifier = Modifier
+                                            .padding(horizontal = 8.dp)
+                                    ) {
                                         Text(
                                             text = data.menuName.toString(),
                                             fontSize = 45.sp,
                                             color = if (data.cookingState == "N") Color.Black else Color.Red,
-                                            modifier = Modifier.basicMarquee()
+                                            modifier = Modifier
+                                                .width(280.dp)
+                                                .basicMarquee()
                                         )
                                         Spacer(Modifier.width(16.dp))
                                         Text(
                                             text = data.count.toString(),
                                             fontSize = 45.sp,
-                                            color = Color.DarkGray
+                                            color = Color.DarkGray,
+                                            modifier = Modifier
+                                                .width(60.dp)
                                         )
                                     }
                                     Spacer(Modifier.height(8.dp))
